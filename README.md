@@ -30,7 +30,7 @@ This system is designed to help wildlife researchers monitor animal behavior nea
    \`\`\`
 6. Start the web application:
    \`\`\`
-   python app.py
+   python main_app.py
    \`\`\`
 7. Open your browser and navigate to `http://localhost:5000`
 
