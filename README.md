@@ -75,5 +75,7 @@ The system supports three types of analysis:
 
 ## Acknowledgments
 
-- Animal detection model based on: https://www.kaggle.com/code/nimapourmoradi/animal-detection/notebook
+- Animal detection dataset: https://www.kaggle.com/datasets/antoreepjana/animals-detection-images-dataset 
+- Animal detection model based on: https://www.kaggle.com/code/nimapourmoradi/animal-detection/notebook (One ca download the MyModel.keras file that can be utiized to predict the animal prediction behaviour.)
+- Animal Behaviour Dataset Link: https://www.kaggle.com/datasets/sttaseen/animal-behaviour 
 - Behavior prediction inspired by: https://github.com/robot-perception-group/animal-behaviour-inference
