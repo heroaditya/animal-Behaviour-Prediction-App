@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Results - Wildlife Monitoring</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .highlight-low { color: green; font-weight: 600; }
+    .highlight-medium { color: orange; font-weight: 600; }
+    .highlight-high { color: red; font-weight: 600; }
+
+    .fade-in { animation: fadeIn 1s ease-in-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .preview-image, .preview-video {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 10px;
+      margin-top: 15px;
+      border: 2px solid #ccc;
+    }
+
+    .result-media {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container fade-in">
+    <header>
+      <div class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        <h1>Wildlife Monitoring System</h1>
+      </div>
+    </header>
+
+    <main>
+      <section class="results">
+        <h2>📊 Analysis Result</h2>
+
+        {% if result.type in ['animal_detection', 'behavior_analysis', 'video_behavior'] %}
+          <div class="result-block">
+            <p><strong>📁 Type:</strong> {{ result.type.replace('_', ' ')|capitalize }}</p>
+
+            {% if result.prediction %}
+              <p><strong>📌 Prediction:</strong> <span style="font-size: 1.2em;">{{ result.prediction }}</span></p>
+            {% endif %}
+
+            {% if result.confidence is number %}
+              <p><strong>🔍 Confidence:</strong> {{ (result.confidence * 100) | round(2) }}%</p>
+            {% else %}
+              <p><strong>🔍 Confidence:</strong> {{ result.confidence }}</p>
+            {% endif %}
+
+            {% if result.reconstruction_mse %}
+              {% set mse = result.reconstruction_mse %}
+              {% if mse < 0.01 %}
+                <p><strong>🧠 Reconstruction MSE:</strong> <span class="highlight-low">{{ mse | round(6) }} (Very Low - Normal behavior likely)</span></p>
+              {% elif mse < 0.05 %}
+                <p><strong>🧠 Reconstruction MSE:</strong> <span class="highlight-medium">{{ mse | round(6) }} (Moderate - Possible unusual activity)</span></p>
+              {% else %}
+                <p><strong>🧠 Reconstruction MSE:</strong> <span class="highlight-high">{{ mse | round(6) }} (High - Abnormal behavior likely 🚨)</span></p>
+              {% endif %}
+            {% endif %}
+
+            {% if result.type == 'animal_detection' and result.media_path %}
+              <div class="result-media">
+                {% if result.media_path.endswith('.jpg') or result.media_path.endswith('.png') or result.media_path.endswith('.jpeg') %}
+                  <h4>🖼️ Uploaded Image:</h4>
+                  <img src="{{ result.media_path }}" alt="Uploaded Media" style="max-width: 500px; border-radius: 10px; margin-top: 10px;">
+                {% elif result.media_path.endswith('.mp4') or result.media_path.endswith('.avi') %}
+                  <h4>🎥 Uploaded Video:</h4>
+                  <video controls class="preview-video">
+                    <source src="{{ result.media_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+
+        {% elif result.type == 'csv_behavior' %}
+  <div class="result-block">
+    <h3>📄 CSV Behavior Analysis Summary</h3>
+
+    {% if result.natural_language_summary %}
+      <p class="nl-summary">🗣️ {{ result.natural_language_summary }}</p>
+    {% endif %}
+
+    <ul>
+      {% for behavior, count in result.summary.items() %}
+        <li><strong>{{ behavior }}</strong>: {{ count }} observations</li>
+      {% endfor %}
+    </ul>
+
+    {% if result.bar_plot %}
+      <div class="plot-image">
+        <h4>🧾 Behavior Distribution:</h4>
+        <img src="{{ result.bar_plot }}" alt="Behavior Plot">
+      </div>
+    {% endif %}
+  </div>
+        {% else %}
+          <p>⚠️ No analysis data available.</p>
+        {% endif %}
+
+        <div class="actions">
+          <a href="{{ url_for('index') }}" class="btn-primary">⬅️ Back to Home</a>
+          {% if result.type != 'csv_behavior' %}
+            <button onclick="suggestAction()" class="btn-secondary">🔍 What does this mean?</button>
+          {% endif %}
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; 2025 Wildlife Monitoring System</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function suggestAction() {
+      const messages = [
+        "📘 If MSE is high, it might indicate stress or danger. Consider reviewing the environment.",
+        "🌿 Low MSE generally reflects normal, calm animal activity. Good news!",
+        "📽️ For video analysis, high MSE could mean aggressive or chasing behavior.",
+        "🧠 Autoencoders are sensitive to novelty — high error means the behavior doesn’t match what the model has learned as 'normal'."
+      ];
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      alert(msg);
+    }
+  </script>
+</body>
+</html>

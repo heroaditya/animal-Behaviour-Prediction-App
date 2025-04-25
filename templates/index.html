@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wildlife Monitoring System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Wildlife Monitoring Logo">
+                <h1>Wildlife Monitoring System</h1>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>Monitor Wildlife Behavior Near Water Bodies</h2>
+                    <p>Upload videos, images, or GPS data to analyze animal behavior and presence using AI-powered models.</p>
+
+                    <div class="upload-container">
+                        <form action="/upload" method="post" enctype="multipart/form-data" id="upload-form">
+                            <div class="file-upload">
+                                <input type="file" name="file" id="file-upload" accept=".mp4,.avi,.mov,.mkv,.csv,.txt,.jpg,.jpeg,.png" required>
+                                <label for="file-upload">
+                                    <div class="upload-icon">📁</div>
+                                    <span class="upload-text">Choose or drag your file here</span>
+                                </label>
+                            </div>
+                            <div class="select-analysis">
+                                <label for="analysis_type">Select Analysis Type:</label>
+                                <select name="analysis_type" id="analysis_type" required>
+                                    <option value="">-- Choose Analysis --</option>
+                                    <option value="animal_detection">Animal Detection (Image)</option>
+                                    <option value="behavior_analysis">Behavior Analysis (Image)</option>
+                                    <option value="video_behavior">Behavior Analysis (Video)</option>
+                                    <option value="csv_behavior">Behavior Analysis (CSV)</option>
+                                </select>
+                            </div>
+                            <div id="file-info" class="hidden">
+                                <span id="file-name"></span>
+                                <button type="button" id="remove-file">Remove</button>
+                            </div>
+                            <button type="submit" class="btn-primary">Analyze</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="{{ url_for('static', filename='images/wildlife-hero.jpg') }}" alt="Wildlife near water">
+                </div>
+            </section>
+
+            <section class="features">
+                <h2>Key Features</h2>
+                <div class="feature-cards">
+                    <div class="feature-card">
+                        <h3>Animal Detection</h3>
+                        <p>Identify species in images using a pretrained animal detection model.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Behavior Analysis</h3>
+                        <p>Use autoencoders to analyze behavioral anomalies from image/video content.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>GPS Data Insights</h3>
+                        <p>Analyze movement and behavior from CSV datasets using classification models.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2025 Wildlife Monitoring System</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileUpload = document.getElementById('file-upload');
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const removeFile = document.getElementById('remove-file');
+
+            fileUpload.addEventListener('change', function () {
+                if (this.files.length > 0) {
+                    fileName.textContent = this.files[0].name;
+                    fileInfo.classList.remove('hidden');
+                } else {
+                    fileInfo.classList.add('hidden');
+                }
+            });
+
+            removeFile.addEventListener('click', function () {
+                fileUpload.value = '';
+                fileInfo.classList.add('hidden');
+            });
+        });
+    </script>
+</body>
+</html>
