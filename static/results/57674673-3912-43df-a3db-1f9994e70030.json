@@ -1,0 +1,1 @@
+{"type": "video_behavior", "reconstruction_mse": 0.0043456380991909556, "interpretation": "\u2705 Normal behavior detected.", "confidence": "High", "explanation": "Behavior is consistent with what the model has seen during training.", "media_path": "/static/uploads/AAAUILHH.mp4"}

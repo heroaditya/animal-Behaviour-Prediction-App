@@ -1,0 +1,1 @@
+{"type": "behavior_analysis", "reconstruction_mse": 0.0021195320661831826, "interpretation": "\u2705 Normal behavior detected.", "confidence": "High", "explanation": "Behavior is consistent with what the model has seen during training.", "media_path": "/static/uploads/tiger.jpg"}
