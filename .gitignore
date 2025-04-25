@@ -1,0 +1,13 @@
+# Ignore environment files
+.env
+
+# Ignore processed data folder
+processed_data/
+
+# Ignore OS/system files
+.DS_Store
+Thumbs.db
+
+# Ignore model checkpoints or temp logs (optional)
+*.log
+*.tmp
